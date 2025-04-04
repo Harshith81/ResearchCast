@@ -35,7 +35,7 @@ scikit-learn
 serpapi
 scholarly
 ffmpeg-python
-
+asyncio
 torch 
 torchvision 
 torchaudio
