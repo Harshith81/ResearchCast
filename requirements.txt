@@ -40,4 +40,5 @@ torch
 torchvision 
 torchaudio
 google-search-results
+spacy
 
