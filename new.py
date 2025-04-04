@@ -54,8 +54,8 @@ import xml.etree.ElementTree as ET
 
 # For Google Scholar integration
 # from serpapi.google_scholar_search import GoogleScholarSearch    
-# from serpapi import GoogleSearch
-from serpapi.google_search import GoogleSearch
+from serpapi import GoogleSearch
+
 
 
 # import scholarly
