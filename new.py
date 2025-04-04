@@ -21,9 +21,6 @@ import re
 import os
 from gtts import gTTS
 import tempfile
-from pydub import AudioSegment
-from pydub.utils import which
-AudioSegment.converter = which("./ffmpeg/ffmpeg") # check this path and place correct path if it is having somekind of error 
 import requests
 from bs4 import BeautifulSoup
 from tenacity import retry, wait_exponential, stop_after_attempt, before_sleep_log
@@ -66,6 +63,28 @@ from scholarly import ProxyGenerator, scholarly
 
 from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
 import string
+
+import subprocess
+
+# Define the path where ffmpeg will be stored
+FFMPEG_PATH = os.path.join(os.getcwd(), "ffmpeg")
+
+# Download ffmpeg only if it's not already present
+if not os.path.exists(FFMPEG_PATH):
+    print("Downloading FFmpeg...")
+    subprocess.run(
+        "wget -q https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz && "
+        "tar -xf ffmpeg-release-amd64-static.tar.xz && "
+        "mv ffmpeg-*-static/ffmpeg . && "
+        "rm -rf ffmpeg-*-static ffmpeg-release-amd64-static.tar.xz",
+        shell=True,
+        check=True,
+    )
+
+# Set ffmpeg path for pydub
+from pydub import AudioSegment
+AudioSegment.converter = os.path.join(os.getcwd(), "ffmpeg")
+
 
 warnings.filterwarnings("ignore", category=UserWarning)   
 sys.setrecursionlimit(10000)
