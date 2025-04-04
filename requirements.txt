@@ -1,0 +1,26 @@
+# Updated requirements.txt
+streamlit
+python-dotenv
+PyPDF2
+langchain
+langchain-google-genai
+langchain-community
+google-generativeai
+gTTS
+pydub
+beautifulsoup4
+requests
+tenacity
+python-pptx
+transformers
+torch
+sentence-transformers
+email-validator
+pytesseract
+faiss-cpu
+pillow
+deep-translator
+streamlit-autorefresh
+pytz
+pyttsx3
+
