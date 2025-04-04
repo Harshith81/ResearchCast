@@ -37,6 +37,7 @@ from keybert import KeyBERT
 import yake
 from rake_nltk import Rake   
 import nltk
+nltk.download('stopwords')
 import numpy as np
 import random
 from nltk.corpus import stopwords
