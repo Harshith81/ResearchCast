@@ -34,6 +34,8 @@ numpy
 scikit-learn
 serpapi
 scholarly
+ffmpeg-python
+
 torch 
 torchvision 
 torchaudio
