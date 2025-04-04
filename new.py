@@ -8,7 +8,6 @@ try:
 except RuntimeError:
     asyncio.set_event_loop(asyncio.new_event_loop())
 
-
 from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
@@ -58,7 +57,9 @@ import xml.etree.ElementTree as ET
 
 # For Google Scholar integration
 # from serpapi.google_scholar_search import GoogleScholarSearch    
-from serpapi import GoogleSearch
+# from serpapi import GoogleSearch
+from serpapi.google_search import GoogleSearch
+
 
 # import scholarly
 from scholarly import ProxyGenerator, scholarly
