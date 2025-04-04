@@ -57,6 +57,13 @@ from scholarly import ProxyGenerator
 from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
 import string
 
+import asyncio
+
+try:
+    asyncio.get_running_loop()
+except RuntimeError:
+    asyncio.run(asyncio.sleep(0))  # Create a new event loop
+
 warnings.filterwarnings("ignore", category=UserWarning)   
 sys.setrecursionlimit(10000)
 
