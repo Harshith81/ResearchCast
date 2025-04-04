@@ -2,6 +2,13 @@ import streamlit as st
 from dotenv import load_dotenv      
 load_dotenv()    
 
+import asyncio
+try:
+    asyncio.get_running_loop()
+except RuntimeError:
+    asyncio.set_event_loop(asyncio.new_event_loop())
+
+
 from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
@@ -50,19 +57,14 @@ from collections import Counter
 import xml.etree.ElementTree as ET  
 
 # For Google Scholar integration
-from serpapi.google_scholar_search import GoogleScholarSearch    
-import scholarly
-from scholarly import ProxyGenerator
+# from serpapi.google_scholar_search import GoogleScholarSearch    
+from serpapi import GoogleSearch
+
+# import scholarly
+from scholarly import ProxyGenerator, scholarly
 
 from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
 import string
-
-import asyncio
-
-try:
-    asyncio.get_running_loop()
-except RuntimeError:
-    asyncio.run(asyncio.sleep(0))  # Create a new event loop
 
 warnings.filterwarnings("ignore", category=UserWarning)   
 sys.setrecursionlimit(10000)
