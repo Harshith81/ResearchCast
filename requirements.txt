@@ -34,3 +34,9 @@ numpy
 scikit-learn
 serpapi
 scholarly
+GoogleSearch
+google-search-results
+torch 
+torchvision 
+torchaudio
+
