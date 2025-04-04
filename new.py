@@ -16,6 +16,8 @@ import os
 from gtts import gTTS
 import tempfile
 from pydub import AudioSegment
+from pydub.utils import which
+AudioSegment.converter = which("./ffmpeg/ffmpeg") # check this path and place correct path if it is having somekind of error 
 import requests
 from bs4 import BeautifulSoup
 from tenacity import retry, wait_exponential, stop_after_attempt, before_sleep_log
