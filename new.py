@@ -1602,111 +1602,112 @@ def main():
                 with st.spinner("Generating podcast audio... This may take a moment."):   
                     
                     voice_settings = audio_settings['voice_settings']
-                background_settings = audio_settings['background_settings']
-    
-                if background_settings['auto_select'] and background_settings['enabled']:
-                    background_settings = select_random_background() 
-                    
-                audio_file, timestamps = generate_audio(
-                    st.session_state.current_transcript,
-                    voice_settings=voice_settings,
-                    background_settings=background_settings
-                )
-                
-                if audio_file:
-                    st.session_state.audio_file = audio_file
-                    st.session_state.timestamps = timestamps  
-                    st.session_state.audio_generation_requested = False   
-                    st.session_state.background_settings_used = background_settings
-    
-    # Display the summary if available
-    if st.session_state.get("document_summary"):
-        with st.expander("📄 Document Summary", expanded=False):
-            st.write(st.session_state.document_summary)
-    else:
-        st.info("Click 'Get Summary' in the sidebar to generate a summary.")
+                    background_settings = audio_settings['background_settings']
         
-    # 4. KEY TERMS SECTION - Display in 3 columns
-    if st.session_state.get("key_terms") and st.session_state.key_terms:
-        st.subheader("4️⃣ Key Terms")
+                    if background_settings['auto_select'] and background_settings['enabled']:
+                        background_settings = select_random_background() 
+                        
+                    audio_file, timestamps = generate_audio(
+                        st.session_state.current_transcript,
+                        voice_settings=voice_settings,
+                        background_settings=background_settings
+                    )
+                       
+                    if audio_file:
+                        st.session_state.audio_file = audio_file
+                        st.session_state.timestamps = timestamps
+                        st.session_state.audio_generation_requested = False   
+                        st.session_state.background_settings_used = background_settings
         
-        with st.expander("View Key Terms", expanded=False):
-            # Calculate number of terms per column (rounded up)
-            terms = st.session_state.key_terms
-            total_terms = len(terms)
-            terms_per_col = (total_terms + 2) // 3  # ceiling division to distribute evenly
+        # Display the summary if available
+        if st.session_state.get("document_summary"):
+            with st.expander("📄 Document Summary", expanded=False):
+                st.write(st.session_state.document_summary)
+        else:
+            st.info("Click 'Get Summary' in the sidebar to generate a summary.")
             
-            # Create 3 columns
-            col1, col2, col3 = st.columns(3)
+        # 4. KEY TERMS SECTION - Display in 3 columns
+        if st.session_state.get("key_terms") and st.session_state.key_terms:
+            st.subheader("4️⃣ Key Terms")
             
-            # Distribute terms across columns
-            with col1:
-                for i in range(0, min(terms_per_col, total_terms)):
-                    st.write(f"• {terms[i]}")
-                    
-            with col2:
-                for i in range(terms_per_col, min(2 * terms_per_col, total_terms)):
-                    st.write(f"• {terms[i]}")
-                    
-            with col3:
-                for i in range(2 * terms_per_col, total_terms):
-                    st.write(f"• {terms[i]}")
-    
-    # 5. AUDIO PLAYBACK SECTION
-    if st.session_state.get("audio_file"):
-        st.subheader("5️⃣ Listen to Podcast")
-        with open(st.session_state.audio_file, "rb") as f:
-            st.audio(f.read(), format="audio/mp3")
-        
-        # Display voice and background information
-        if "voice_settings" in st.session_state:
-            st.caption(f"Host Voice: {st.session_state.voice_settings['host']['name']} | " +
-                    f"Guest Voice: {st.session_state.voice_settings['guest']['name']}")  
-        
-        if "background_settings_used" in st.session_state and st.session_state.background_settings_used['enabled']:
-            st.caption(f"Background: {st.session_state.background_settings_used['track_name']} (Auto-selected)")
-        
-    # 6. Q&A SECTION
-    if text_chunks:
-        st.subheader("6️⃣ Ask Questions")
-        vector_store = setup_qa_system(text_chunks)
-        if vector_store:
-            question = st.text_input("Type your question here ❓")
-            if question:
-                time.sleep(1)  # Small delay to prevent rapid API calls
-                docs = vector_store.similarity_search(question) 
+            with st.expander("View Key Terms", expanded=False):
+                # Calculate number of terms per column (rounded up)
+                terms = st.session_state.key_terms
+                total_terms = len(terms)
+                terms_per_col = (total_terms + 2) // 3  # ceiling division to distribute evenly
                 
-                context = "\n\n".join([doc.page_content for doc in docs if hasattr(doc, "page_content")])
-                if not context:
-                    # If not, join directly as strings:
-                    context = "\n\n".join(docs)   
+                # Create 3 columns
+                col1, col2, col3 = st.columns(3)
                 
-                answer = generate_qa_answer(context, question)
-                st.markdown(f"**Answer:** {answer}")
-            
-    if "related_papers" in st.session_state and st.session_state.related_papers:
-        st.subheader("7️⃣ Related Research Papers")
-        
-        # Directly create expanders for each paper without nesting
-        for i, paper in enumerate(st.session_state.related_papers, 1):
-            with st.expander(f"{i}. {paper.get('title', 'Unknown Title')}", expanded=False):
-                st.write(f"**Authors:** {paper.get('authors', 'Unknown')}")
-                
-                # Journal information
-                journal_info = paper.get('journal', 'N/A')
-                if journal_info == 'N/A' or not journal_info:   
-                    journal_info = paper.get('venue', 'Unknown Journal or Internet Source')  
-                
-                # Create two columns for metadata and link   
-                col1, col2 = st.columns([3, 1])
+                # Distribute terms across columns
                 with col1:
-                    st.write(f"**Year:** {paper.get('year', 'Unknown')}")
-                    st.write(f"**Citations:** {paper.get('citations', 'Unknown')}")  
-                    st.write(f"**Journal:** {journal_info}")
-                
+                    for i in range(0, min(terms_per_col, total_terms)):
+                        st.write(f"• {terms[i]}")
+                        
                 with col2:
-                    if paper.get('url'):
-                        st.markdown(f"[View Paper]({paper['url']})")     
+                    for i in range(terms_per_col, min(2 * terms_per_col, total_terms)):
+                        st.write(f"• {terms[i]}")
+                        
+                with col3:
+                    for i in range(2 * terms_per_col, total_terms):
+                        st.write(f"• {terms[i]}")
+        
+        # 5. AUDIO PLAYBACK SECTION
+        if st.session_state.get("audio_file"):
+            st.subheader("5️⃣ Listen to Podcast")
+            with open(st.session_state.audio_file, "rb") as f:
+                st.audio(f.read(), format="audio/mp3")
+            
+            # Display voice and background information
+            if "voice_settings" in st.session_state:
+                st.caption(f"Host Voice: {st.session_state.voice_settings['host']['name']} | " +
+                          f"Guest Voice: {st.session_state.voice_settings['guest']['name']}")  
+            
+            if "background_settings_used" in st.session_state and st.session_state.background_settings_used['enabled']:
+                st.caption(f"Background: {st.session_state.background_settings_used['track_name']} (Auto-selected)")
+            
+        # 6. Q&A SECTION
+        if text_chunks:
+            st.subheader("6️⃣ Ask Questions")
+            vector_store = setup_qa_system(text_chunks)
+            if vector_store:
+                question = st.text_input("Type your question here ❓")
+                if question:
+                    time.sleep(1)  # Small delay to prevent rapid API calls
+                    docs = vector_store.similarity_search(question) 
+                    
+                    context = "\n\n".join([doc.page_content for doc in docs if hasattr(doc, "page_content")])
+                    if not context:
+                        # If not, join directly as strings:
+                        context = "\n\n".join(docs)   
+                    
+                    answer = generate_qa_answer(context, question)
+                    st.markdown(f"**Answer:** {answer}")
+    
+        # 7. RELATED PAPERS SECTION - Using expanders for each paper
+        if "related_papers" in st.session_state and st.session_state.related_papers:
+            st.subheader("7️⃣ Related Research Papers")
+        
+            # Directly create expanders for each paper without nesting
+            for i, paper in enumerate(st.session_state.related_papers, 1):
+                with st.expander(f"{i}. {paper.get('title', 'Unknown Title')}", expanded=False):
+                    st.write(f"**Authors:** {paper.get('authors', 'Unknown')}")
+                    
+                    # Journal information
+                    journal_info = paper.get('journal', 'N/A')
+                    if journal_info == 'N/A' or not journal_info:   
+                        journal_info = paper.get('venue', 'Unknown Journal or Internet Source')  
+                    
+                    # Create two columns for metadata and link   
+                    col1, col2 = st.columns([3, 1])
+                    with col1:
+                        st.write(f"**Year:** {paper.get('year', 'Unknown')}")
+                        st.write(f"**Citations:** {paper.get('citations', 'Unknown')}")  
+                        st.write(f"**Journal:** {journal_info}")
+                    
+                    with col2:
+                        if paper.get('url'):
+                            st.markdown(f"[View Paper]({paper['url']})")     
 if __name__ == "__main__":   
     main()
 
