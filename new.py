@@ -63,6 +63,7 @@ stop_words = stopwords.words('english')
 
 # ✅ Ensure current directory is in sys.path to allow importing local 'kokoro' package
 sys.path.append(os.path.abspath("."))
+sys.path.append(str(Path(__file__).resolve().parent))
 
 import numpy as np
 import random
