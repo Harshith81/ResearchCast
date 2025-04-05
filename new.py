@@ -726,6 +726,7 @@ class KokoroTTS:
     """
     def __init__(self):
         try:
+            import kokoro
             from kokoro import KPipeline
             self.pipeline_a = KPipeline(lang_code='a')  # American English
             self.pipeline_b = KPipeline(lang_code='b')  # British English
@@ -849,6 +850,7 @@ def select_random_background():
 def check_kokoro_installation():
     """Check if Kokoro is installed and working properly"""
     try:
+        import kokoro
         from kokoro import KPipeline
         # Try to initialize with a simple test
         pipeline = KPipeline(lang_code='a')
