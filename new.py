@@ -41,12 +41,27 @@ import soundfile as sf
 from keybert import KeyBERT
 import yake
 from rake_nltk import Rake   
+
 import nltk
-nltk.data.path.append('./nltk_data')  # add this line at the top
+nltk.data.path.append('./nltk_data')
+resources = ['punkt', 'stopwords', 'wordnet']
+for res in resources:
+    try:
+        if res == 'punkt':
+            nltk.data.find(f'tokenizers/{res}')
+        else:
+            nltk.data.find(f'corpora/{res}')
+    except LookupError:
+        try:
+            nltk.download(res, download_dir='./nltk_data', quiet=True)
+        except Exception as e:
+            st.error(f"Error downloading {res}: {str(e)}")
+            st.stop()
+from nltk.corpus import stopwords
+stop_words = stopwords.words('english')
+
 import numpy as np
 import random
-from nltk.corpus import stopwords
-stop_words = stopwords.words('english') 
 
 import urllib.parse
 from collections import Counter
@@ -54,7 +69,7 @@ import xml.etree.ElementTree as ET
 
 # For Google Scholar integration
 # from serpapi.google_scholar_search import GoogleScholarSearch 
-from serpapi.google_search_results import GoogleSearch
+#from serpapi.google_search_results import GoogleSearch
 #from serpapi import GoogleSearch
 
 
@@ -89,15 +104,6 @@ AudioSegment.converter = os.path.join(os.getcwd(), "ffmpeg")
 
 warnings.filterwarnings("ignore", category=UserWarning)   
 sys.setrecursionlimit(10000)
-
-# Download NLTK resources
-try:
-    nltk.download('punkt', quiet=True)
-    nltk.download('stopwords', quiet=True)
-    nltk.download('wordnet', quiet=True)
-except Exception as e:
-    st.error(f"Error downloading NLTK resources: {str(e)}") 
-    st.stop()
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
