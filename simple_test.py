@@ -4,6 +4,6 @@ sys.path.append(".")
 try:
     from kokoro import KPipeline
     pipeline = KPipeline(lang_code='a')
-    print("✅ Kokoro loaded successfully.")
+    success("✅ Kokoro loaded successfully.")
 except Exception as e:
-    print(f"❌ Kokoro error: {e}")
+    error(f"❌ Kokoro error: {e}")
