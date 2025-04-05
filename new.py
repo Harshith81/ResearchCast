@@ -53,8 +53,9 @@ from collections import Counter
 import xml.etree.ElementTree as ET  
 
 # For Google Scholar integration
-# from serpapi.google_scholar_search import GoogleScholarSearch    
-from serpapi import GoogleSearch
+# from serpapi.google_scholar_search import GoogleScholarSearch 
+from serpapi.google_search_results import GoogleSearch
+#from serpapi import GoogleSearch
 
 
 
