@@ -80,27 +80,30 @@ from scholarly import ProxyGenerator, scholarly
 from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
 import string
 
-import subprocess
-
-# Define the path where ffmpeg will be stored
-FFMPEG_PATH = os.path.join(os.getcwd(), "ffmpeg")
-
-# Download ffmpeg only if it's not already present
-if not os.path.exists(FFMPEG_PATH):
-    print("Downloading FFmpeg...")
-    subprocess.run(
-        "wget -q https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz && "
-        "tar -xf ffmpeg-release-amd64-static.tar.xz && "
-        "mv ffmpeg-*-static/ffmpeg . && "
-        "rm -rf ffmpeg-*-static ffmpeg-release-amd64-static.tar.xz",
-        shell=True,
-        check=True,
-    )
-
-# Set ffmpeg path for pydub
 from pydub import AudioSegment
-AudioSegment.converter = os.path.join(os.getcwd(), "ffmpeg")
+import subprocess
+import shutil
 
+# Check if ffmpeg is installed in the system PATH
+def is_ffmpeg_available():
+    return shutil.which("ffmpeg") is not None
+
+# Optionally print FFmpeg version for debug
+def verify_ffmpeg():
+    if is_ffmpeg_available():
+        try:
+            result = subprocess.run(["ffmpeg", "-version"], capture_output=True, text=True, check=True)
+            print("✅ FFmpeg is available:\n", result.stdout.splitlines()[0])
+        except Exception as e:
+            print("⚠️ FFmpeg check failed:", e)
+    else:
+        print("❌ FFmpeg is not available")
+
+# Set ffmpeg for pydub (optional, as it auto-detects)
+AudioSegment.converter = "ffmpeg"
+
+# Run check (optional, for logging/debugging)
+verify_ffmpeg()
 
 warnings.filterwarnings("ignore", category=UserWarning)   
 sys.setrecursionlimit(10000)
