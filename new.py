@@ -43,7 +43,7 @@ import yake
 from rake_nltk import Rake   
 
 import nltk
-nltk.data.path.append('./nltk_data')
+nltk.data.path.append("nltk_data")
 resources = ['punkt', 'stopwords', 'wordnet']
 for res in resources:
     try:
@@ -59,6 +59,13 @@ for res in resources:
             st.stop()
 from nltk.corpus import stopwords
 stop_words = stopwords.words('english')
+
+
+# ✅ Ensure current directory is in sys.path to allow importing local 'kokoro' package
+sys.path.append(os.path.abspath("."))
+
+# ✅ Now you can import the Kokoro pipeline
+from kokoro.pipeline import KPipeline
 
 import numpy as np
 import random
