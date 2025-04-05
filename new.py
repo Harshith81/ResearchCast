@@ -84,26 +84,16 @@ from pydub import AudioSegment
 import subprocess
 import shutil
 
-# Check if ffmpeg is installed in the system PATH
-def is_ffmpeg_available():
-    return shutil.which("ffmpeg") is not None
-
-# Optionally print FFmpeg version for debug
-def verify_ffmpeg():
-    if is_ffmpeg_available():
-        try:
-            result = subprocess.run(["ffmpeg", "-version"], capture_output=True, text=True, check=True)
-            print("✅ FFmpeg is available:\n", result.stdout.splitlines()[0])
-        except Exception as e:
-            print("⚠️ FFmpeg check failed:", e)
+def ensure_ffmpeg():
+    ffmpeg_path = shutil.which("ffmpeg")
+    if ffmpeg_path:
+        print(f"✅ FFmpeg found at: {ffmpeg_path}")  
+        AudioSegment.converter = ffmpeg_path
     else:
-        print("❌ FFmpeg is not available")
+        raise EnvironmentError("❌ FFmpeg not found. Make sure it's installed via packages.txt.")
 
-# Set ffmpeg for pydub (optional, as it auto-detects)
-AudioSegment.converter = "ffmpeg"
-
-# Run check (optional, for logging/debugging)
-verify_ffmpeg()
+# Call this early in your app
+ensure_ffmpeg()
 
 warnings.filterwarnings("ignore", category=UserWarning)   
 sys.setrecursionlimit(10000)
