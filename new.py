@@ -64,9 +64,6 @@ stop_words = stopwords.words('english')
 # ✅ Ensure current directory is in sys.path to allow importing local 'kokoro' package
 sys.path.append(os.path.abspath("."))
 
-# ✅ Now you can import the Kokoro pipeline
-from kokoro.pipeline import KPipeline
-
 import numpy as np
 import random
 
@@ -732,8 +729,7 @@ class KokoroTTS:
     """
     def __init__(self):
         try:
-            import kokoro
-            from kokoro import KPipeline
+            from kokoro.pipeline import KPipeline
             self.pipeline_a = KPipeline(lang_code='a')  # American English
             self.pipeline_b = KPipeline(lang_code='b')  # British English
             self.initialized = True
@@ -856,8 +852,7 @@ def select_random_background():
 def check_kokoro_installation():
     """Check if Kokoro is installed and working properly"""
     try:
-        import kokoro
-        from kokoro import KPipeline
+        from kokoro.pipeline import KPipeline
         # Try to initialize with a simple test
         pipeline = KPipeline(lang_code='a')
         print("Kokoro TTS initialized successfully!")
