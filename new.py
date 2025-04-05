@@ -85,15 +85,14 @@ import subprocess
 import shutil
 
 def ensure_ffmpeg():
-    ffmpeg_path = shutil.which("ffmpeg")
-    if ffmpeg_path:
-        print(f"✅ FFmpeg found at: {ffmpeg_path}")  
+    ffmpeg_path = "/usr/bin/ffmpeg"
+    if os.path.exists(ffmpeg_path):
         AudioSegment.converter = ffmpeg_path
+        print("✅ FFmpeg is available and configured.")
+        return True
     else:
-        raise EnvironmentError("❌ FFmpeg not found. Make sure it's installed via packages.txt.")
-
-# Call this early in your app
-ensure_ffmpeg()
+        print("❌ FFmpeg is missing!")
+        return False
 
 warnings.filterwarnings("ignore", category=UserWarning)   
 sys.setrecursionlimit(10000)
@@ -1434,6 +1433,11 @@ def main():
     
     # Check audio assets
     check_audio_assets()
+
+    ffmpeg_ok = ensure_ffmpeg()
+    if not ffmpeg_ok:
+        st.error("FFmpeg is missing. Audio features won't work.")
+        return
     
     # Check if Kokoro is installed and working
     st.session_state.kokoro_available = check_kokoro_installation()
