@@ -12,6 +12,7 @@ st.code(result.stdout)
 try:
     import kokoro
     st.success("Kokoro imported successfully!")
+    st.write("Kokoro contents:", dir(kokoro))
 except ImportError as e:
     st.error(f"Failed to import kokoro: {str(e)}")
     
@@ -19,5 +20,6 @@ except ImportError as e:
 try:
     import kokoro_tts
     st.success("kokoro_tts imported successfully!")
+    st.write("kokoro_tts contents:", dir(kokoro_tts))
 except ImportError as e:
     st.error(f"Failed to import kokoro_tts: {str(e)}")
