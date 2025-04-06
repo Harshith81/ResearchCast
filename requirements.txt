@@ -33,14 +33,13 @@ nltk
 scikit-learn
 serpapi
 scholarly
-ffmpeg-python
+#ffmpeg-python
 asyncio
 torchvision 
 torchaudio
 google-search-results
 spacy
 scikit-learn
-
 loguru
 torch>=1.7.0
 numpy>=1.19.0
@@ -48,7 +47,7 @@ librosa>=0.8.0
 scipy>=1.5.0
 omegaconf
 soundfile
-git+https://github.com/hexgrad/kokoro.git
+#git+https://github.com/hexgrad/kokoro.git
 #git+https://github.com/nazdridoy/kokoro-tts.git
 #git+https://github.com/nazdridoy/kokoro-tts.git#egg=kokoro
 #git+https://github.com/hexgrad/kokoro.git
