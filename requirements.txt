@@ -42,3 +42,4 @@ torchaudio
 google-search-results
 spacy
 scikit-learn
+git+https://github.com/hexgrad/kokoro.git
