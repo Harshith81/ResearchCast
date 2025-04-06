@@ -42,3 +42,4 @@ torchaudio
 google-search-results
 spacy
 scikit-learn
+kokoro-tts
