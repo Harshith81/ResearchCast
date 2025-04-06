@@ -83,6 +83,8 @@ from pydub import AudioSegment
 import subprocess
 import shutil
 
+import kokoro
+
 def ensure_ffmpeg():
     ffmpeg_path = "/usr/bin/ffmpeg"
     if os.path.exists(ffmpeg_path):
