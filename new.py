@@ -43,20 +43,16 @@ import yake
 from rake_nltk import Rake   
 
 import nltk
-nltk.data.path.append("nltk_data")
+os.makedirs('./nltk_data', exist_ok=True)
+nltk.data.path.append('./nltk_data')
 resources = ['punkt', 'stopwords', 'wordnet']
 for res in resources:
     try:
-        if res == 'punkt':
-            nltk.data.find(f'tokenizers/{res}')
-        else:
-            nltk.data.find(f'corpora/{res}')
-    except LookupError:
-        try:
-            nltk.download(res, download_dir='./nltk_data', quiet=True)
-        except Exception as e:
-            st.error(f"Error downloading {res}: {str(e)}")
-            st.stop()
+        nltk.download(res, download_dir='./nltk_data', quiet=True)
+    except Exception as e:
+        st.error(f"Error downloading {res}: {str(e)}")
+        st.stop()
+
 from nltk.corpus import stopwords
 stop_words = stopwords.words('english')
 
@@ -76,8 +72,6 @@ import xml.etree.ElementTree as ET
 # from serpapi.google_scholar_search import GoogleScholarSearch 
 #from serpapi.google_search_results import GoogleSearch
 #from serpapi import GoogleSearch
-
-
 
 # import scholarly
 from scholarly import ProxyGenerator, scholarly
